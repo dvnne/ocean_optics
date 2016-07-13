@@ -1,6 +1,4 @@
-# This file creates a global variable called 'data' and calculates
-# the metrics included
-# It can also plot a number of text files
+# Plotting and calculation of vegetation indices for reflectance data
 # Added: graphical file pickers
 # Update: plotFile allows for multiple selections
 # Updtae: Tkinter window allowing for data summary and chart creation
