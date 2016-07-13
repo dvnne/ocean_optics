@@ -63,10 +63,13 @@ def summarizeData():
     finaldir = str(directory + os.sep + 'indices')
     try:
         rmtree(finaldir)
-    except:
-        pass
+    except: pass
     finally:
-        os.mkdir(finaldir)
+        try:
+            os.mkdir(finaldir)
+        except Exception as e:
+            print "%s\nProcess terminated" % e
+            return
     d = dict()
     foutbase = finaldir + os.sep + getFileName(directory) + 'Indices'
     for f in os.listdir(directory)[:]: # make a copy
