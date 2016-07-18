@@ -13,6 +13,7 @@ class Reflectance(object):
         self.ref = None
         self.spectrum = None
         self.wavelengths = None
+        self.data = list()
     
     # grab a spectrum and return to the shell prompt
     def getData(self):
@@ -31,13 +32,16 @@ class Reflectance(object):
         self.writer = rospy.Subscriber("/spectrometer/spectrum", Spectrum, self.writeCSV)
         rospy.spin()
 
+    def callback(self, data):
+        self.data.append(data.spectrum)
+
     def writeCSV(self, data):
+        self.data.insert(0, data.wavelengths)
         spectrum = data.spectrum
         wavelengths = data.wavelengths
         assert len(spectrum) == len(wavelengths)
         with open('spectrum.csv', mode = 'w+b') as csvout:
             writer = csv.writer(csvout)
-            writer.writerow(['wavelength', 'counts'])
             for i in xrange(len(wavelengths)):
                 writer.writerow([wavelengths[i], spectrum[i]])
 
