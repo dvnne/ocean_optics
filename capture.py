@@ -29,13 +29,14 @@ class Reflectance(object):
     # similar to the above, but writes data
     def writeData(self):
         rospy.init_node('subscriber')
-        self.writer = rospy.Subscriber("/spectrometer/spectrum", Spectrum, self.writeCSV)
+        self.writer = rospy.Subscriber("/spectrometer/spectrum", Spectrum, self.callback)
+        self.writeCSV()
         rospy.spin()
 
     def callback(self, data):
         self.data.append(data.spectrum)
 
-    def writeCSV(self, data):
+    def writeCSV(self):
         self.data.insert(0, data.wavelengths)
         spectrum = data.spectrum
         wavelengths = data.wavelengths
