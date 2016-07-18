@@ -18,10 +18,8 @@ class Reflectance(object):
         rospy.init_node('subscriber')
         self.subscriber = rospy.Subscriber("/spectrometer/spectrum", Spectrum,
                                             self.getDataWrapper)
-        rospy.spin()
 
     def getDataWrapper(self, data):
-        print 'got data'
         self.spectrum = data.spectrum
         self.wavelengths = data.wavelengths
         self.subscriber.unregister()
