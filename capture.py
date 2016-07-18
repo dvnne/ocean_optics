@@ -1,6 +1,6 @@
 #!usr/bin/env python
 from __future__ import division
-import rospy
+import rospy, time
 from ocean_optics.msg import Spectrum
 import matplotlib.pyplot as plt
 import Tkinter as tk
@@ -12,16 +12,19 @@ class Reflectance(object):
         self.bg = None
         self.ref = None
         self.spectrum = None
+        self.wavelengths = None
 
-    def getData(self): # to be used as a decorator
+    def getData(self):
         rospy.init_node('subscriber')
         self.subscriber = rospy.Subscriber("/spectrometer/spectrum", Spectrum,
                                             self.getDataWrapper)
-        self.subscriber.unregister()
+        rospy.spin()
 
     def getDataWrapper(self, data):
+        print 'got data'
         self.spectrum = data.spectrum
         self.wavelengths = data.wavelengths
+        self.subscriber.unregister()
 
     def initAnimation(self): # line length
         root = tk.Tk()
