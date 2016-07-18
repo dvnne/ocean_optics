@@ -1,6 +1,6 @@
 #!usr/bin/env python
 from __future__ import division
-import rospy, time
+import rospy, rosbag, time
 from ocean_optics.msg import Spectrum
 import matplotlib.pyplot as plt
 import Tkinter as tk
@@ -13,7 +13,8 @@ class Reflectance(object):
         self.ref = None
         self.spectrum = None
         self.wavelengths = None
-
+    
+    # grab a spectrum and return to the shell prompt
     def getData(self):
         rospy.init_node('subscriber')
         self.subscriber = rospy.Subscriber("/spectrometer/spectrum", Spectrum,
@@ -72,3 +73,9 @@ class Reflectance(object):
         spectrum = data.spectrum
         plt.plot(wavelengths, spectrum)
         plt.show(block = False)
+
+    def bagRecord(self):
+        bag = rosbag.Bag(spectra.bag)
+        for item in bag.read_messages(topics = ['/spectrometer/spectrum']):
+            print item
+        bag.close()
