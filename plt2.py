@@ -9,7 +9,6 @@ plt.ion()
 def callback(data):
     wavelengths = data.wavelengths	
     spectrum = data.spectrum
-    sleep(1)
     plt.clf()
     plt.plot(wavelengths, spectrum)
     plt.draw()
