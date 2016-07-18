@@ -75,7 +75,7 @@ class Reflectance(object):
         plt.show(block = False)
 
     def bagRecord(self):
-        bag = rosbag.Bag(spectra.bag)
+        bag = rosbag.Bag('spectra.bag')
         for item in bag.read_messages(topics = ['/spectrometer/spectrum']):
             print item
         bag.close()
