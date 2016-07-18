@@ -1,6 +1,6 @@
 #!usr/bin/env python
 from __future__ import division
-import rospy, rosbag, time
+import rospy, rosbag, time, csv
 from ocean_optics.msg import Spectrum
 import matplotlib.pyplot as plt
 import Tkinter as tk
@@ -24,6 +24,22 @@ class Reflectance(object):
         self.spectrum = data.spectrum
         self.wavelengths = data.wavelengths
         self.subscriber.unregister()
+
+    # similar to the above, but writes data
+    def writeData(self):
+        rospy.init_node('subscriber')
+        self.writer = rospy.Subscriber("/spectrometer/spectrum", Spectrum, self.writeCSV)
+        rospy.spin()
+
+    def writeCSV(self, data):
+        spectrum = data.spectrum
+        wavelengths = data.wavelengths
+        assert len(spectrum) == len(wavelengths)
+        with open('spectrum.csv', mode = 'w+b') as csvout:
+            writer = csv.writer(csvout)
+            writer.writerow(['wavelength', 'counts'])
+            for i in xrange(len(wavelengths)):
+                writer.writerow([wavelengths[i], spectrum[i]])
 
     def initAnimation(self): # line length
         root = tk.Tk()
@@ -75,7 +91,9 @@ class Reflectance(object):
         plt.show(block = False)
 
     def bagRecord(self):
-        bag = rosbag.Bag(spectra.bag)
+        self.bag = bag = rosbag.Bag('spectra.bag')
         for item in bag.read_messages(topics = ['/spectrometer/spectrum']):
-            print item
+            self.item = item
+            break
         bag.close()
+r = Reflectance()
