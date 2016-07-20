@@ -14,6 +14,7 @@ class Reflectance(object):
         self.spectrum = None
         self.wavelengths = None
         self.data = list()
+        self.first_callback = True
     
     # grab a spectrum and return to the shell prompt
     def getData(self):
@@ -30,21 +31,19 @@ class Reflectance(object):
     def writeData(self):
         rospy.init_node('subscriber')
         self.writer = rospy.Subscriber("/spectrometer/spectrum", Spectrum, self.callback)
-        self.writeCSV()
         rospy.spin()
 
     def callback(self, data):
+        if self.first_callback == True:
+            self.data.append(data.wavelengths)
+            self.first_callback = False
         self.data.append(data.spectrum)
 
     def writeCSV(self):
-        self.data.insert(0, data.wavelengths)
-        spectrum = data.spectrum
-        wavelengths = data.wavelengths
-        assert len(spectrum) == len(wavelengths)
         with open('spectrum.csv', mode = 'w+b') as csvout:
             writer = csv.writer(csvout)
-            for i in xrange(len(wavelengths)):
-                writer.writerow([wavelengths[i], spectrum[i]])
+            for row in self.data:
+                writer.writerow(row)
 
     def initAnimation(self): # line length
         root = tk.Tk()
