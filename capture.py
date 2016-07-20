@@ -42,6 +42,8 @@ class Reflectance(object):
     def writeCSV(self):
         with open('spectrum.csv', mode = 'w+b') as csvout:
             writer = csv.writer(csvout)
+            # transform rows into cols
+            self.data = np.transpose(np.array(self.data))
             for row in self.data:
                 writer.writerow(row)
 
