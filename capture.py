@@ -17,15 +17,30 @@ class Reflectance(object):
         self.first_callback = True
     
     # grab a spectrum and return to the shell prompt
-    def getData(self):
+    def getData(self, prefix = ''):
         rospy.init_node('subscriber')
         self.subscriber = rospy.Subscriber("/spectrometer/spectrum", Spectrum,
                                             self.getDataWrapper)
 
     def getDataWrapper(self, data):
+        self.timestamp = time.asctime()
         self.spectrum = data.spectrum
         self.wavelengths = data.wavelengths
         self.subscriber.unregister()
+        self.makeline()
+
+    def makeline(self):
+        if self.first_callback == True:
+            self.data.append(['wavelengths'] + self.wavelengths)
+        self.data.append([self.timestamp] + self.spectrum
+
+    def writeAll(self):
+        with open('spectrum.csv', mode = 'w+b') as csvout:
+            writer = csv.writer(csvout)
+            # transform rows into cols
+            self.data = np.transpose(np.array(self.data))
+            for row in self.data:
+                writer.writerow(row)
 
     # similar to the above, but writes data
     def writeData(self):
