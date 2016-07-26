@@ -209,8 +209,8 @@ def nearestElement(l, target):
             return i
     return len(difflist) - 1 # index of last element
 
-################ Metrics #################
-# Taking no parameters these calculate the metrics using
+################ Vegetation indices #################
+# Taking no parameters these calculate the vegetation indices using
 # the 'R' function to pick out the reflectance needed
 #########################################
 
@@ -238,7 +238,7 @@ def MCARI():
 
 def TCARI():
     """Transformed Chlorophyll Absorption in Reflectance Index:
-    3*[(R700 - R650) - 0.2*(R700 - R550)(R700/R670)]"""
+    3*[(R700 - R670) - 0.2*(R700 - R550)(R700/R670)]"""
     R700, R670, R650, R550 = R(700), R(670), R(650), R(550)
     return 3*((R700 - R670) - 0.2*(R700 - R550)*(R700/R670))
 
