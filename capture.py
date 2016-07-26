@@ -117,4 +117,5 @@ class Reflectance(object):
             self.item = item
             break
         bag.close()
+
 r = Reflectance()
