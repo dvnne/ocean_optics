@@ -18,7 +18,7 @@ class SpectrumWriter(object):
     def getData(self, prefix = '', mode = 'single'):
         rospy.init_node('subscriber')
         self.subscriber = rospy.Subscriber("/spectrometer/spectrum", Spectrum,
-                                            lambda : self.getDataWrapper(mode = mode)
+                                            lambda : self.getDataWrapper(mode = mode))
         self.first_callback = False
 
     def getDataWrapper(data, mode = 'single'):
@@ -33,7 +33,7 @@ class SpectrumWriter(object):
     def makeline(self):
         if self.first_callback == True:
             self.data.append(['wavelengths'] + self.wavelengths)
-        self.data.append([self.timestamp] + self.spectrum
+        self.data.append([self.timestamp] + self.spectrum)
    
     def single(self, prefix = ''):
         self.getData(mode = 'single')
