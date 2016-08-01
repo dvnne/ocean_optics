@@ -11,8 +11,7 @@ class Preview(object):
         self.spectrum = []
         self.wavelengths = []
         self.initAnimation()
-        while not rospy.is_shutdown():
-            self.getData()
+        self.getData()
 
     def initAnimation(self):
         self.fig = plt.figure()
@@ -29,3 +28,5 @@ class Preview(object):
         self.subscriber.unregister()
         self.l.set_data([self.wavelengths, self.spectrum])
         plt.show(block = False)
+
+p = Preview()
