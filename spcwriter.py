@@ -18,13 +18,14 @@ class SpectrumWriter(object):
     def getData(self, prefix = '', mode = 'single'):
         rospy.init_node('subscriber')
         self.subscriber = rospy.Subscriber("/spectrometer/spectrum", Spectrum,
-                                            lambda : self.getDataWrapper(mode = mode))
-        self.first_callback = False
+                                lambda data: self.getDataWrapper(data, mode = mode))
+        if mode != 'single':
+            rospy.spin()
 
-    def getDataWrapper(data, mode = 'single'):
-        timestamp = time.asctime()
-        spectrum = data.spectrum
-        wavelengths = data.wavelengths
+    def getDataWrapper(self, data, mode = 'single'):
+        self.timestamp = time.asctime()
+        self.spectrum = list(data.spectrum)
+        self.wavelengths = list(data.wavelengths)
         if mode == 'single':
             self.subscriber.unregister()
         self.makeline()
@@ -39,10 +40,8 @@ class SpectrumWriter(object):
         self.getData(mode = 'single')
 
     def bag(self):
-        try:
-            self.getData(mode = 'bag')
-        except KeyboardInterrupt:
-            self.writeCSV()
+        self.getData(mode = 'bag')
+        self.writeCSV()
 
     def writeCSV(self):
         with open('spectrum.csv', mode = 'w+b') as csvout:
@@ -53,4 +52,3 @@ class SpectrumWriter(object):
                 writer.writerow(row)
 
 s = SpectrumWriter()
-s.bag()
