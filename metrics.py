@@ -60,6 +60,8 @@ def summarizeData():
     dictionary with summarized data
     """
     directory = askdirectory()
+    if bool(directory) == False:
+        return # stop if cancelled
     finaldir = str(directory + os.sep + 'indices')
     try:
         rmtree(finaldir)
@@ -209,8 +211,8 @@ def nearestElement(l, target):
             return i
     return len(difflist) - 1 # index of last element
 
-################ Metrics #################
-# Taking no parameters these calculate the metrics using
+################ Vegetation indices #################
+# Taking no parameters these calculate the vegetation indices using
 # the 'R' function to pick out the reflectance needed
 #########################################
 
