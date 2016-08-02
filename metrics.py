@@ -217,52 +217,52 @@ def nearestElement(l, target):
 #########################################
 
 def R(wavelength):
-    """Reflectance at 'wavelength'"""
+    # Reflectance at 'wavelength'
     index = nearestElement(data, wavelength)
     return data[index][1]
 
 def NDVI():
-    """Normalized Difference Vegetation Index:
-    (R780 - R670)/(R780 + R670)"""
+    # Normalized Difference Vegetation Index:
+    # (R780 - R670)/(R780 + R670)
     R670, R780 = R(670), R(780)
     return (R780-R670)/(R780 + R670)
 
 def PRI():
-    """Photochemical Reflectance Index 
-    (R531 - R570)/(R531 + R570)"""
+    # Photochemical Reflectance Index 
+    # (R531 - R570)/(R531 + R570)
     R531, R570 = R(531), R(570)
     return (R531 - R570)/(R531 + R570)
 
 def MCARI():
-    """[(R700 - R670) - 0.2*(R700 - R550)]*(R700/R670)"""
+    # [(R700 - R670) - 0.2*(R700 - R550)]*(R700/R670)
     R700, R670, R550 = R(700), R(670), R(550)
     return ((R700 - R670) - 0.2*(R700 - R550))*(R700/R670)
 
 def TCARI():
-    """Transformed Chlorophyll Absorption in Reflectance Index:
-    3*[(R700 - R670) - 0.2*(R700 - R550)(R700/R670)]"""
+    # Transformed Chlorophyll Absorption in Reflectance Index:
+    # 3*[(R700 - R650) - 0.2*(R700 - R550)(R700/R670)]
     R700, R670, R650, R550 = R(700), R(670), R(650), R(550)
     return 3*((R700 - R670) - 0.2*(R700 - R550)*(R700/R670))
 
 def OSAWI():
-    """Optimized Soil Adjustment Index:
-    (1 + 0.16*(R800 - R670))/(0.16 + R760 + R800)"""
+    # Optimized Soil Adjustment Index:
+    # (1 + 0.16*(R800 - R670))/(0.16 + R760 + R800)
     R670, R760, R800 = R(670), R(760), R(800)
     return (1.16*(R800 - R670))/(0.16 + R760 + R800)
 
 def NPCI():
-    """Normalized Pigment Chlorophyll Index:
-    (R680-R430)/(R680 + R430)"""
+    # Normalized Pigment Chlorophyll Index:
+    # (R680-R430)/(R680 + R430)
     R430, R680 = R(430), R(680)
     return (R680-R430)/(R680 + R430)
 
 def gitl550():
-    """R750/R550"""
+    # R750/R550
     R750, R550 = R(750), R(550)
     return R750/R550
 
 def gitl700():
-    """R750/R700"""
+    # R750/R700
     R700, R750 = R(700), R(750)
     return R750/R700
     
