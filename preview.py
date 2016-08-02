@@ -21,12 +21,14 @@ class Preview(object):
         rospy.init_node('subscriber')
         self.subscriber = rospy.Subscriber("/spectrometer/spectrum", Spectrum,
                                             self.getDataWrapper)
+        rospy.spin()
 
     def getDataWrapper(self, data):
+        print 'got data'
         self.spectrum = data.spectrum
         self.wavelengths = data.wavelengths
-        self.subscriber.unregister()
         self.l.set_data([self.wavelengths, self.spectrum])
-        plt.show(block = False)
+        self.subscriber.unregister()
+        plt.show()
 
 p = Preview()
