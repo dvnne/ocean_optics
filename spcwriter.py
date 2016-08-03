@@ -8,10 +8,8 @@ import numpy as np
 
 class SpectrumWriter(object):
     def __init__(self):
-        self.bg = None
-        self.ref = None
-        self.spectrum = None
         self.wavelengths = None
+        self.spectrum = None
         self.data = list()
         self.first_callback = True
 
